@@ -15,10 +15,12 @@ public class SaleItemDao extends GenericDaoImpl<SaleItem> implements GenericDao<
 
     private Connection connection;
     private final String TABLE_NAME = "sale_item";
+    private final List<String> COLUMNS = List.of("product_id", "quantity", "percentual_discount", "sale_id");
 
     public SaleItemDao(Connection connection) {
         super(SaleItem::new, connection);
         super.tableName = TABLE_NAME;
+        super.columns = COLUMNS;
     }
 
     public List< SaleItem > findAllBySaleId(Connection connection, int saleId) throws SQLException {

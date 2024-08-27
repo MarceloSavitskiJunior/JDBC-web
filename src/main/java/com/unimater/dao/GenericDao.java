@@ -8,6 +8,6 @@ public interface GenericDao<T extends Entity> {
 
     List<T> getAll();
     T getById(int id);
-    void upsert(T product);
+    T upsert(T product);
     void deleteById(int id);
 }

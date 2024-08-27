@@ -1,6 +1,7 @@
 package com.unimater.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,11 +15,20 @@ public class ProductType implements Entity {
         this.description = description;
     }
 
+    public ProductType(String description) {
+        this.description = description;
+    }
+
     public ProductType() {
     }
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -39,5 +49,11 @@ public class ProductType implements Entity {
     @Override
     public String toString() {
         return id + " " + description;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, getDescription());
+        return preparedStatement;
     }
 }

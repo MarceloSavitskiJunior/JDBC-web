@@ -3,6 +3,7 @@
     import com.unimater.dao.impl.ProductDao;
 
     import java.sql.Connection;
+    import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
 
@@ -12,11 +13,13 @@
         private Product product;
         private int quantity;
         private double percentualDiscount;
+        private int saleId;
 
-        public SaleItem(Product product, int quantity, double percentualDiscount) {
+        public SaleItem(Product product, int quantity, double percentualDiscount, int sale) {
             this.product = product;
             this.quantity = quantity;
             this.percentualDiscount = percentualDiscount;
+            this.saleId = sale;
         }
 
         public SaleItem() {
@@ -28,6 +31,11 @@
             this.product = getProduct(connection, id);
             this.quantity = resultSet.getInt("quantity");
             this.percentualDiscount = resultSet.getDouble("percentual_discount");
+            this.saleId = resultSet.getInt("sale_id");
+        }
+
+        public SaleItem(int saleId) {
+            this.saleId = saleId;
         }
 
         private Product getProduct(Connection connection, int productId) {
@@ -55,6 +63,19 @@
         @Override
         public int getId() {
             return id;
+        }
+
+        @Override
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public PreparedStatement prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+            preparedStatement.setObject(1, getProduct().getId());
+            preparedStatement.setDouble(2, getQuantity());
+            preparedStatement.setDouble(3, getPercentualDiscount());
+            return preparedStatement;
         }
 
         @Override

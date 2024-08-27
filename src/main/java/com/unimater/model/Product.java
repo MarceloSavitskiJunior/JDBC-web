@@ -1,8 +1,10 @@
 package com.unimater.model;
 
 import com.unimater.dao.ProductTypeDao;
+import com.unimater.dao.impl.ProductDao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,11 +22,30 @@ public class Product implements Entity {
         this.value = value;
     }
 
+    public Product(ProductType productType, String description, double value) {
+        this.productType = productType;
+        this.description = description;
+        this.value = value;
+    }
+
     public Product() {
     }
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setObject(1, getProductType().getId());
+        preparedStatement.setString(2, getDescription());
+        preparedStatement.setDouble(3, getValue());
+        return preparedStatement;
     }
 
     public ProductType getProductType() {
@@ -42,7 +63,7 @@ public class Product implements Entity {
     public Product(ResultSet resultSet, Connection connection) throws SQLException {
         super();
         this.id = resultSet.getInt("id");
-        this.productType = getProductType(connection, id);
+        this.productType = getProductType(connection, resultSet.getInt("product_type_id"));
         this.description = resultSet.getString("description");
         this.value = resultSet.getDouble("value");
     }
