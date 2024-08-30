@@ -76,20 +76,15 @@ public class App {
             products.forEach(s -> System.out.println(s.toString()));
 
             // INSERINDO VALORES
-            ProductType pt_never = productTypeDao.getById(1);
+            ProductType pt = productTypeDao.getById(1);
 
-            Product produto = new Product(pt_never, "Novo produto", 12);
+            Product produto = new Product(pt, "Novo produto", 12);
             productDao.upsert(produto);
             Sale salee = saleDao.upsert(new Sale());
             System.out.println(salee.toString());
-//            saleItemDao.upsert(new );
-//            productTypeDao.upsert(news ProductType("Tipo de produto teste"));
-//            saleItemDao.upsert(new SaleItem(productDao.getById(1), 3, 1.25));
-//            saleItemDao.upsert(new SaleItem(productDao.getById(2), 4, 0.25));
-//            saleDao.upsert(new Sale(saleItemDao.getAll()));
 
             // PROCURAR SE TODOS MUDARAM
-            System.out.println("****** VERIFICANDO SE OS COISO FORAM SALVOS ******");
+            System.out.println("****** VERIFICANDO SE OS OBJETOS FORAM SALVOS ******");
             productTypeDao.getAll().forEach(p -> System.out.println(p.toString()));
             saleItemDao.getAll().forEach(saleitens -> System.out.println(saleitens.toString()));
             saleDao.getAll().forEach(sale -> System.out.println(sale.toString()));
