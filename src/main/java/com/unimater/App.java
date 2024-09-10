@@ -2,6 +2,7 @@ package com.unimater;
 
 import com.sun.net.httpserver.HttpServer;
 import com.unimater.controller.HelloWorldHandler;
+import com.unimater.controller.ProductTypeHandler;
 import com.unimater.dao.ProductTypeDao;
 import com.unimater.dao.SaleDao;
 import com.unimater.dao.impl.ProductDao;
@@ -26,9 +27,16 @@ public class App {
             Connection connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/minhabase",
                     "postgres",
-                    "admin");
+                    "ademiro");
+
+            ProductTypeDao productTypeDao = new ProductTypeDao(connection);
+            SaleItemDao saleItemDao = new SaleItemDao(connection);
+            ProductDao productDao = new ProductDao(connection);
+            SaleDao saleDao = new SaleDao(connection);
+
             HttpServer servidor = HttpServer.create(new InetSocketAddress(8081), 0);
             servidor.createContext("/helloWorld", new HelloWorldHandler());
+            servidor.createContext("/product-type", new ProductTypeHandler(productTypeDao));
 
             servidor.setExecutor(null);
             // uri = tudo, desde o http até o último dígito: http://google.com/buscar
@@ -46,49 +54,49 @@ public class App {
             servidor.start();
             System.out.println("Servidor rodando na porta " + servidor.getAddress());
 
-            ProductTypeDao productTypeDao = new ProductTypeDao(connection);
-            SaleItemDao saleItemDao = new SaleItemDao(connection);
-            ProductDao productDao = new ProductDao(connection);
-            SaleDao saleDao = new SaleDao(connection);
-
-            saleDao.getById(1);
-            // BUSCANDO VALORES
-            System.out.println("________PRODUCT TYPE________");
-            List< ProductType > productTypes = productTypeDao.getAll();
-            productTypes.forEach(p -> System.out.println(p.toString()));
-
-            breakLine();
-
-            System.out.println("________SALE ITEM________");
-            List< SaleItem > saleItens = saleItemDao.getAll();
-            saleItens.forEach(si -> System.out.println(si.toString()));
-
-            breakLine();
-
-            System.out.println("________SALE________");
-            List< Sale > sales = saleDao.getAll();
-            sales.forEach(s -> System.out.println(s.toString()));
-
-            breakLine();
-
-            System.out.println("________PRODUCT________");
-            List< Product > products = productDao.getAll();
-            products.forEach(s -> System.out.println(s.toString()));
-
-            // INSERINDO VALORES
-            ProductType pt = productTypeDao.getById(1);
-
-            Product produto = new Product(pt, "Novo produto", 12);
-            productDao.upsert(produto);
-            Sale salee = saleDao.upsert(new Sale());
-            System.out.println(salee.toString());
-
-            // PROCURAR SE TODOS MUDARAM
-            System.out.println("****** VERIFICANDO SE OS OBJETOS FORAM SALVOS ******");
-            productTypeDao.getAll().forEach(p -> System.out.println(p.toString()));
-            saleItemDao.getAll().forEach(saleitens -> System.out.println(saleitens.toString()));
-            saleDao.getAll().forEach(sale -> System.out.println(sale.toString()));
-            productDao.getAll().forEach(product -> System.out.println(product.toString()));
+//            ProductTypeDao productTypeDao = new ProductTypeDao(connection);
+//            SaleItemDao saleItemDao = new SaleItemDao(connection);
+//            ProductDao productDao = new ProductDao(connection);
+//            SaleDao saleDao = new SaleDao(connection);
+//
+//            saleDao.getById(1);
+//            // BUSCANDO VALORES
+//            System.out.println("________PRODUCT TYPE________");
+//            List< ProductType > productTypes = productTypeDao.getAll();
+//            productTypes.forEach(p -> System.out.println(p.toString()));
+//
+//            breakLine();
+//
+//            System.out.println("________SALE ITEM________");
+//            List< SaleItem > saleItens = saleItemDao.getAll();
+//            saleItens.forEach(si -> System.out.println(si.toString()));
+//
+//            breakLine();
+//
+//            System.out.println("________SALE________");
+//            List< Sale > sales = saleDao.getAll();
+//            sales.forEach(s -> System.out.println(s.toString()));
+//
+//            breakLine();
+//
+//            System.out.println("________PRODUCT________");
+//            List< Product > products = productDao.getAll();
+//            products.forEach(s -> System.out.println(s.toString()));
+//
+//            // INSERINDO VALORES
+//            ProductType pt = productTypeDao.getById(1);
+//
+//            Product produto = new Product(pt, "Novo produto", 12);
+//            productDao.upsert(produto);
+//            Sale salee = saleDao.upsert(new Sale());
+//            System.out.println(salee.toString());
+//
+//            // PROCURAR SE TODOS MUDARAM
+//            System.out.println("****** VERIFICANDO SE OS OBJETOS FORAM SALVOS ******");
+//            productTypeDao.getAll().forEach(p -> System.out.println(p.toString()));
+//            saleItemDao.getAll().forEach(saleitens -> System.out.println(saleitens.toString()));
+//            saleDao.getAll().forEach(sale -> System.out.println(sale.toString()));
+//            productDao.getAll().forEach(product -> System.out.println(product.toString()));
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
