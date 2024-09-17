@@ -2,16 +2,18 @@ package com.unimater.controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.unimater.dao.ProductTypeDao;
+import com.unimater.dao.impl.ProductDao;
+import com.unimater.dao.impl.SaleItemDao;
 import com.unimater.generic.GenericControllerImpl;
-import com.unimater.model.ProductType;
+import com.unimater.model.Product;
+import com.unimater.model.SaleItem;
 
 import java.io.IOException;
 
-public class ProductTypeHandler extends GenericControllerImpl<ProductTypeDao, ProductType> implements HttpHandler {
+public class SaleItemHandler extends GenericControllerImpl<SaleItemDao, SaleItem> implements HttpHandler {
 
-    public ProductTypeHandler(ProductTypeDao dao) {
-        super(dao, ProductType.class);
+    public SaleItemHandler(SaleItemDao dao) {
+        super(dao, SaleItem.class);
     }
 
     @Override

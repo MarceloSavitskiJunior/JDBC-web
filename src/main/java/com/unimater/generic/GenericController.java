@@ -2,11 +2,13 @@ package com.unimater.generic;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import java.io.IOException;
+
 public interface GenericController {
 
-    void handleMethod(String method, HttpExchange exchange);
-    void doPost(HttpExchange exchange);
-    void doGet(HttpExchange exchange);
-    void doPut(HttpExchange exchange);
-    void doDelete(HttpExchange exchange);
+    void handleMethod(String method, HttpExchange exchange) throws IOException;
+    void doPost(HttpExchange exchange) throws IOException;
+    void doGet(HttpExchange exchange) throws IOException;
+    void doPut(HttpExchange exchange) throws IOException;
+    void doDelete(HttpExchange exchange) throws IOException;
 }
